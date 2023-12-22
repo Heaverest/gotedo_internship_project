@@ -25,4 +25,4 @@ Route.get("/", async ({ view }) => {
 });
 
 Route.resource("users", "UsersController");
-Route.resource("support_requests", "UsersController");
+Route.resource("support_requests", "SupportRequestsController");
