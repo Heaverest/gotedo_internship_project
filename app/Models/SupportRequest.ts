@@ -9,10 +9,14 @@ export default class SupportRequest extends BaseModel {
   public messageTitle: string;
 
   @column()
-  public messageText: string;
+  public firstName: string;
 
   @column()
-  public createdBy: number;
+  public lastName: string;
+
+  @column()
+  public messageText: string;
+
 
   @column()
   public email: string;
@@ -20,6 +24,6 @@ export default class SupportRequest extends BaseModel {
   @column()
   public file_uploaded: string;
 
-  @belongsTo(() => User, { localKey: "createdBy" })
+  @belongsTo(() => User, { localKey: "email" })
   public user: BelongsTo<typeof User>;
 }

@@ -5,9 +5,7 @@ import User from "App/Models/User";
 import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class SupportRequestsController {
-  public async index({ response, view }: HttpContextContract) {
-    //const support = await SupportRequest.all();
-    //return response.json(support);
+  public async index({ response, view }: HttpContextContract) { 
     return view.render("RequestForm")
 
   }
@@ -19,7 +17,7 @@ export default class SupportRequestsController {
     const supportRequestSchema = schema.create({
         firstName: schema.string(),
        lastName: schema.string(),
-      created_by: schema.number(),
+      email: schema.string(),
       message_title: schema.string(),
       message_text: schema.string(),
       uploaded_file: schema.string()
@@ -27,7 +25,7 @@ export default class SupportRequestsController {
 
     try {
       const payload = await request.validate({ schema: supportRequestSchema })
-      console.log(payload)
+      
       await Database.table("support_requests").insert({ payload })
       return response.redirect().back()
     } catch (err) {
