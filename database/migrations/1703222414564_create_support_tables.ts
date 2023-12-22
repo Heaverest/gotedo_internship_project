@@ -6,15 +6,15 @@ export default class SupportRequests extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments("id").primary();
-      table.string("messageTitle", 255);
+      table.string("message_title", 255);
       table
-        .integer("createdBy")
+        .integer("created_by")
         .unsigned()
         .notNullable()
         .references("id")
         .inTable("users");
-      table.text("messaageText");
-      table.string("uploadedFile", 255);
+      table.text("messaage_text");
+      table.string("uploaded_file", 255);
     });
   }
 
