@@ -12,7 +12,7 @@ export default class SupportRequest extends BaseModel {
   public messageText: string;
 
   @column()
-  public createdBy: string;
+  public createdBy: number;
 
   @column()
   public uploadedFile: string;

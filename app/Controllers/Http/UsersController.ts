@@ -7,8 +7,6 @@ export default class UsersController {
     return response.json(user);
   }
 
-  public async create({}: HttpContextContract) {}
-
   public async store({ request, response }: HttpContextContract) {
     const data = request.only(["firstName", "lastName", "email"]);
     console.log(data);
@@ -21,8 +19,6 @@ export default class UsersController {
     const user = await User.findOrFail(params.id);
     return response.json(user);
   }
-
-  public async edit({}: HttpContextContract) {}
 
   public async update({ params, request, response }: HttpContextContract) {
     const data = request.only(["firstName", "lastName", "email"]);
