@@ -15,7 +15,10 @@ export default class SupportRequest extends BaseModel {
   public createdBy: number;
 
   @column()
-  public uploadedFile: string;
+  public email: string;
+
+  @column()
+  public file_uploaded: string;
 
   @belongsTo(() => User, { localKey: "createdBy" })
   public user: BelongsTo<typeof User>;

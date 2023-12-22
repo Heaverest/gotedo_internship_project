@@ -2,26 +2,38 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema } from '@ioc:Adonis/Core/Validator';
 import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class SupportRequestsController {
-  public async index({ response,view }: HttpContextContract) {
+  public async index({ response, view }: HttpContextContract) {
     //const support = await SupportRequest.all();
     //return response.json(support);
     return view.render("RequestForm")
-    
+
   }
 
   public async store({ request, response }: HttpContextContract) {
+
+    const data = request.body()
+    console.log(data)
     const supportRequestSchema = schema.create({
-       firstName: schema.string(),
-      lastName: schema.string(),
-      email: schema.string(),
-      messageTitle: schema.string(),
-      messageContent: schema.string(),
-      requestImg:schema.string()
+        firstName: schema.string(),
+       lastName: schema.string(),
+      created_by: schema.number(),
+      message_title: schema.string(),
+      message_text: schema.string(),
+      uploaded_file: schema.string()
     })
 
-    const payload = await request.validate({ schema: supportRequestSchema })
+    try {
+      const payload = await request.validate({ schema: supportRequestSchema })
+      console.log(payload)
+      await Database.table("support_requests").insert({ payload })
+      return response.redirect().back()
+    } catch (err) {
+      response.badRequest(err.messages)
+    }
+
 
     // const { messageTitle, messageText, email } = request.only([
     //   "messageTitle",
@@ -30,7 +42,7 @@ export default class SupportRequestsController {
     //   "requestImg"
     // ]);
     // console.log({ messageTitle, messageText, email });
-    return payload
+
 
     // const user = await User.findByOrFail("email", email);
     // const support = await SupportRequest.create({
