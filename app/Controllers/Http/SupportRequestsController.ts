@@ -1,41 +1,58 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import { schema } from '@ioc:Adonis/Core/Validator';
 import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
 
 export default class SupportRequestsController {
-  public async index({ response }: HttpContextContract) {
-    const support = await SupportRequest.all();
-    return response.json(support);
+  public async index({ response,view }: HttpContextContract) {
+    //const support = await SupportRequest.all();
+    //return response.json(support);
+    return view.render("RequestForm")
+    
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const { messageTitle, messageText, email } = request.only([
-      "messageTitle",
-      "messageText",
-      "email",
-    ]);
-    console.log({ messageTitle, messageText, email });
+    const supportRequestSchema = schema.create({
+       firstName: schema.string(),
+      lastName: schema.string(),
+      email: schema.string(),
+      messageTitle: schema.string(),
+      messageContent: schema.string(),
+      requestImg:schema.string()
+    })
 
-    const user = await User.findByOrFail("email", email);
-    const support = await SupportRequest.create({
-      messageTitle,
-      messageText,
-      createdBy: user.id,
-    });
+    const payload = await request.validate({ schema: supportRequestSchema })
 
-    return response.json({ support });
+    // const { messageTitle, messageText, email } = request.only([
+    //   "messageTitle",
+    //   "messageText",
+    //   "email",
+    //   "requestImg"
+    // ]);
+    // console.log({ messageTitle, messageText, email });
+    return payload
+
+    // const user = await User.findByOrFail("email", email);
+    // const support = await SupportRequest.create({
+    //   messageTitle,
+    //   messageText,
+    //   createdBy: user.id,
+    // });
+
+    // return response.json({ support });
   }
 
-  public async show({ params, response }: HttpContextContract) {
-    const support = await SupportRequest.findOrFail(params.id);
-    return response.json(support);
-  }
+  // public async show({ params, response }: HttpContextContract) {
+  //   const support = await SupportRequest.findOrFail(params.id);
+  //   return response.json(support);
+  // }
 
   public async update({ params, request, response }: HttpContextContract) {
     const { messageTitle, messageText, email } = request.only([
       "messageTitle",
       "messageText",
       "email",
+      "requestImg"
     ]);
     const user = await User.findOrFail("email", email);
 
