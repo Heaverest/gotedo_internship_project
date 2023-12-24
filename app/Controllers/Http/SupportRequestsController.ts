@@ -12,24 +12,25 @@ export default class SupportRequestsController {
 
   public async store({ request, response }: HttpContextContract) {
 
-    const data = request.body()
-    console.log(data)
+    // const data = request.body()
+    // console.log(data)
     const supportRequestSchema = schema.create({
         firstName: schema.string(),
        lastName: schema.string(),
       email: schema.string(),
       message_title: schema.string(),
       message_text: schema.string(),
-      uploaded_file: schema.string()
+      file_uploaded: schema.string()
     })
 
     try {
       const payload = await request.validate({ schema: supportRequestSchema })
-      
-      await Database.table("support_requests").insert({ payload })
+      console.log(payload)
+      await Database.table("support_requests").insert( payload )
       return response.redirect().back()
     } catch (err) {
       response.badRequest(err.messages)
+      console.log(err.messages)
     }
 
 
